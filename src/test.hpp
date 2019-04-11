@@ -17,10 +17,15 @@ struct Test_output {
    std::size_t false_positive{0};
    std::size_t false_negative{0};
 
-   double true_positive_rate{0};
-   double true_negative_rate{0};
-   double false_positive_rate{0};
-   double false_negative_rate{0};
+   double true_positive_rate{0.};
+   double true_negative_rate{0.};
+   double false_positive_rate{0.};
+   double false_negative_rate{0.};
+
+   double positive_predicive_value{0.};
+   double negative_predicive_value{0.};
+   double false_discovery_rate{0.};
+   double false_omission_rate{0.};
 
    double mean_diff{0.0};
 
@@ -42,6 +47,10 @@ std::ostream& operator<<(std::ostream& ostr, const Test_output& t)
         << "true negative rate = " << t.true_negative_rate << '\n'
         << "false positive rate = " << t.false_positive_rate << '\n'
         << "false negative rate = " << t.false_negative_rate << '\n'
+        << "positive predicive value = " << t.positive_predicive_value << '\n'
+        << "negative predicive value = " << t.negative_predicive_value << '\n'
+        << "false discovery rate = " << t.false_discovery_rate << '\n'
+        << "false omission rate = " << t.false_omission_rate << '\n'
         << "mean abs diff = " << t.mean_diff << " (should be < 0.5)"
         << '\n';
    return ostr;
@@ -71,6 +80,11 @@ Test_output test(F f, const std::vector<Dataset<N>>& dataset)
    to.true_negative_rate  = static_cast<double>(to.true_negative ) / to.negative;
    to.false_positive_rate = static_cast<double>(to.false_positive) / to.negative;
    to.false_negative_rate = static_cast<double>(to.false_negative) / to.positive;
+
+   to.positive_predicive_value = static_cast<double>(to.true_positive) / (to.true_positive + to.false_positive);
+   to.negative_predicive_value = static_cast<double>(to.true_negative) / (to.true_negative + to.false_negative);
+   to.false_discovery_rate = static_cast<double>(to.false_positive) / (to.false_positive + to.true_positive);
+   to.false_omission_rate  = static_cast<double>(to.false_negative) / (to.false_negative + to.true_negative);
 
    to.mean_diff /= to.sample_size;
 

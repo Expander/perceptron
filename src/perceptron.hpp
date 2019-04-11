@@ -18,10 +18,10 @@ public:
    {
       const auto sgn = point.y - call(point.x);
 
-      for (std::size_t i = 0; i < weights.size(); i++) {
+      w0 += sgn;
+
+      for (std::size_t i = 0; i < weights.size(); i++)
          weights[i] += sgn*point.x[i];
-         w0 += sgn;
-      }
    }
 
    void print(std::ostream& ostr) const {

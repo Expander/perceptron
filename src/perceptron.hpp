@@ -10,7 +10,7 @@ namespace perceptron {
 template <int N>
 class Perceptron {
 public:
-   double call(const Point<N>& x) const {
+   int call(const Point<N>& x) const {
       return step(w0 + std::inner_product(x.cbegin(), x.cend(), weights.cbegin(), 0.0));
    }
 
@@ -56,8 +56,8 @@ private:
    Point<N> weights{};
    double w0{0.0};
 
-   double step(double x) const {
-      return x < 0. ? 0. : 1.;
+   int step(double x) const {
+      return x < 0 ? 0 : 1;
    }
 };
 

@@ -15,7 +15,7 @@ int main(int argc, char* argv[])
    Perceptron<N> perceptron;
 
    // and
-   auto f = [] (const Point<N>& x) -> double {
+   auto f = [] (const Point<N>& x) -> int {
       return x[0] > 0.5 && x[1] > 0.5;
    };
 

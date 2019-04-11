@@ -10,13 +10,13 @@ namespace perceptron {
 template <int N>
 class Perceptron {
 public:
-   int call(const Point<N>& x) const {
+   int run(const Point<N>& x) const {
       return step(w0 + std::inner_product(x.cbegin(), x.cend(), weights.cbegin(), 0.0));
    }
 
    void train(const Dataset<N>& point)
    {
-      const auto sgn = point.y - call(point.x);
+      const auto sgn = point.y - run(point.x);
 
       w0 += sgn;
 

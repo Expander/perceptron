@@ -75,7 +75,7 @@ Test_output test(F f, const std::vector<Dataset<N>>& dataset)
    to.sample_size = dataset.size();
 
    for (const auto& d: dataset) {
-      const auto y = f.call(d.x);
+      const auto y = f.run(d.x);
 
       if (d.y && y) to.true_positive++;
       if (!d.y && !y) to.true_negative++;

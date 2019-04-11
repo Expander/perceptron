@@ -46,16 +46,16 @@ Test_output test(F f, const std::vector<Dataset<N>>& dataset)
    for (const auto& d: dataset) {
       const auto y = f.call(d.x);
 
-      if (d.y) to.positive++;
-      if (!d.y) to.negative++;
       if (d.y && y) to.true_positive++;
       if (!d.y && !y) to.true_negative++;
-      if (d.y && !y) to.false_positive++;
-      if (!d.y && y) to.false_negative++;
+      if (d.y && !y) to.false_negative++;
+      if (!d.y && y) to.false_positive++;
 
       to.mean_diff += std::abs(d.y - y);
    }
 
+   to.positive = to.true_positive + to.false_negative;
+   to.negative = to.true_negative + to.false_positive;
    to.mean_diff /= to.sample_size;
 
    return to;

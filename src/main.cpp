@@ -16,7 +16,7 @@ int main(int argc, char* argv[])
 
    // and
    auto f = [] (const Point<N>& x) -> int {
-      return x[0] > 0.5 && x[1] > 0.5;
+      return x[0] > 0.5 && x[1] > 0.5 ? 1 : 0;
    };
 
    std::cout << "generating data (" << npoints << " points) ..." << std::endl;

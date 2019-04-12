@@ -30,7 +30,7 @@ int main(int argc, char* argv[])
    std::cout << "training ..." << std::endl;
 
    Perceptron<N> slp;
-   MLP<N> mlp;
+   MLP<N,N> mlp;
 
    for (const auto& d : training_sample)
       slp.train(d);

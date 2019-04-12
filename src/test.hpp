@@ -70,8 +70,8 @@ std::ostream& operator<<(std::ostream& ostr, const Test_output& t)
    return ostr;
 }
 
-template <class F, int N>
-Test_output test(F f, const std::vector<Dataset<N>>& dataset)
+template <class Classifier, int N>
+Test_output test(Classifier f, const std::vector<Dataset<N>>& dataset)
 {
    Test_output to;
    to.sample_size = dataset.size();

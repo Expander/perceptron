@@ -8,9 +8,9 @@
 
 namespace perceptron {
 
-namespace {
+namespace detail {
 
-double make_random(double min_, double max_)
+inline double make_random(double min_, double max_)
 {
    static std::random_device rd;
    static std::mt19937 rng(rd());
@@ -19,7 +19,7 @@ double make_random(double min_, double max_)
    return uni(rng);
 }
 
-} // anonymous namespace
+} // namespace detail
 
 template <int N>
 using Point = std::array<double,N>;
@@ -37,7 +37,7 @@ auto make_dataset(Func f, int npoints) -> std::vector<Dataset<N>>
 
    for (int i = 0; i < npoints; i++) {
       for (int n = 0; n < N; n++)
-         dataset[i].x[n] = make_random(0., 1.);
+         dataset[i].x[n] = detail::make_random(0., 1.);
       dataset[i].y = f(dataset[i].x);
    }
 
@@ -57,4 +57,4 @@ void write_to_file(const std::string& filename, const std::vector<Dataset<N>>& d
    }
 }
 
-}
+} // namespace perceptron

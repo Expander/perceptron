@@ -76,4 +76,4 @@ std::ostream& operator<<(std::ostream& ostr, const Perceptron<N>& p)
    return ostr;
 }
 
-}
+} // namespace perceptron

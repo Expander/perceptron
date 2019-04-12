@@ -123,4 +123,4 @@ Test_output test(F f, const std::vector<Dataset<N>>& dataset)
    return to;
 }
 
-}
+} // namespace perceptron

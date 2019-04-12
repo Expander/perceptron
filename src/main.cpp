@@ -12,7 +12,6 @@ int main(int argc, char* argv[])
       npoints = atol(argv[1]);
 
    constexpr int N = 2;
-   Perceptron<N> perceptron;
 
    // and
    auto f = [](const Point<N>& x) -> int {
@@ -28,6 +27,8 @@ int main(int argc, char* argv[])
    write_to_file("testing_sample.txt", testing_sample);
 
    std::cout << "training ..." << std::endl;
+
+   Perceptron<N> perceptron;
 
    for (const auto& d : training_sample)
       perceptron.train(d);

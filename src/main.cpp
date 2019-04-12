@@ -36,13 +36,11 @@ int main(int argc, char* argv[])
    const auto test_output = test(perceptron, testing_sample);
    std::cout << test_output;
 
-   std::cout << "\nPerceptron layout: ";
-   perceptron.print(std::cout);
-   std::cout << std::endl;
+   std::cout << "\nPerceptron layout: " << perceptron << std::endl;
 
    std::cout << '\n';
    std::cout << "Gnuplot script:\n";
-   perceptron.print_gnuplot_function(std::cout);
+   print_gnuplot_function(perceptron, std::cout);
    std::cout << "plot 'training_sample.txt' u 2:3:1 w points palette, f(x)" << std::endl;
 
    return 0;

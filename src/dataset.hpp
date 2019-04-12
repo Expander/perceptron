@@ -31,12 +31,12 @@ struct Dataset {
 };
 
 template <int N, class Func>
-auto make_dataset(Func f, int npoints) -> std::vector<Dataset<N>>
+auto make_dataset(Func f, long npoints) -> std::vector<Dataset<N>>
 {
    std::vector<Dataset<N>> dataset(npoints);
 
-   for (int i = 0; i < npoints; i++) {
-      for (int n = 0; n < N; n++)
+   for (long i = 0; i < npoints; i++) {
+      for (long n = 0; n < N; n++)
          dataset[i].x[n] = detail::make_random(0., 1.);
       dataset[i].y = f(dataset[i].x);
    }

@@ -6,10 +6,10 @@ int main(int argc, char* argv[])
 {
    using namespace perceptron;
 
-   int npoints = 10000;
+   long npoints = 10000;
 
    if (argc > 1)
-      npoints = atoi(argv[1]);
+      npoints = atol(argv[1]);
 
    constexpr int N = 2;
    Perceptron<N> perceptron;

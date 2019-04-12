@@ -15,7 +15,7 @@ int main(int argc, char* argv[])
    Perceptron<N> perceptron;
 
    // and
-   auto f = [] (const Point<N>& x) -> int {
+   auto f = [](const Point<N>& x) -> int {
       return x[0] > 0.5 && x[1] > 0.5 ? 1 : 0;
    };
 
@@ -29,7 +29,7 @@ int main(int argc, char* argv[])
 
    std::cout << "training ..." << std::endl;
 
-   for (const auto& d: training_sample)
+   for (const auto& d : training_sample)
       perceptron.train(d);
 
    std::cout << "testing ...\n\n";
@@ -41,7 +41,8 @@ int main(int argc, char* argv[])
    std::cout << '\n';
    std::cout << "Gnuplot script:\n";
    print_gnuplot_function(perceptron, std::cout);
-   std::cout << "plot 'training_sample.txt' u 2:3:1 w points palette, f(x)" << std::endl;
+   std::cout << "plot 'training_sample.txt' u 2:3:1 w points palette, f(x)"
+             << std::endl;
 
    return 0;
 }

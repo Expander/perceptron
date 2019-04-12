@@ -54,17 +54,19 @@ std::ostream& operator<<(std::ostream& ostr, const Test_output& t)
         << "true negative rate (TNR) = " << t.true_negative_rate << '\n'
         << "false positive rate (FPR) = " << t.false_positive_rate << '\n'
         << "false negative rate (FNR) = " << t.false_negative_rate << '\n'
-        << "positive predicive value (PPV) = " << t.positive_predicive_value << '\n'
-        << "negative predicive value (NPV) = " << t.negative_predicive_value << '\n'
+        << "positive predicive value (PPV) = " << t.positive_predicive_value
+        << '\n'
+        << "negative predicive value (NPV) = " << t.negative_predicive_value
+        << '\n'
         << "false discovery rate (FDR) = " << t.false_discovery_rate << '\n'
         << "false omission rate (FOR) = " << t.false_omission_rate << '\n'
         << "accuracy (ACC) = " << t.accuracy << '\n'
         << "F1 score = " << t.f1_score << '\n'
-        << "matthews correlation coefficient (MCC) = " << t.matthews_correlation_coefficient << '\n'
+        << "matthews correlation coefficient (MCC) = "
+        << t.matthews_correlation_coefficient << '\n'
         << "bookmaker informednes (BM) = " << t.bookmaker_informednes << '\n'
         << "markednes (MK) = " << t.markednes << '\n'
-        << "mean abs diff = " << t.mean_diff << " (should be < 0.5)"
-        << '\n';
+        << "mean abs diff = " << t.mean_diff << " (should be < 0.5)" << '\n';
    return ostr;
 }
 
@@ -74,13 +76,17 @@ Test_output test(F f, const std::vector<Dataset<N>>& dataset)
    Test_output to;
    to.sample_size = dataset.size();
 
-   for (const auto& d: dataset) {
+   for (const auto& d : dataset) {
       const auto y = f.run(d.x);
 
-      if (d.y && y) to.true_positive++;
-      if (!d.y && !y) to.true_negative++;
-      if (d.y && !y) to.false_negative++;
-      if (!d.y && y) to.false_positive++;
+      if (d.y && y)
+         to.true_positive++;
+      if (!d.y && !y)
+         to.true_negative++;
+      if (d.y && !y)
+         to.false_negative++;
+      if (!d.y && y)
+         to.false_positive++;
 
       to.mean_diff += std::abs(d.y - y);
    }
@@ -88,35 +94,37 @@ Test_output test(F f, const std::vector<Dataset<N>>& dataset)
    to.positive = to.true_positive + to.false_negative;
    to.negative = to.true_negative + to.false_positive;
 
-   to.true_positive_rate  = static_cast<double>(to.true_positive ) / to.positive;
-   to.true_negative_rate  = static_cast<double>(to.true_negative ) / to.negative;
-   to.false_positive_rate = static_cast<double>(to.false_positive) / to.negative;
-   to.false_negative_rate = static_cast<double>(to.false_negative) / to.positive;
+   to.true_positive_rate = static_cast<double>(to.true_positive) / to.positive;
+   to.true_negative_rate = static_cast<double>(to.true_negative) / to.negative;
+   to.false_positive_rate =
+      static_cast<double>(to.false_positive) / to.negative;
+   to.false_negative_rate =
+      static_cast<double>(to.false_negative) / to.positive;
 
    to.positive_predicive_value = static_cast<double>(to.true_positive) /
-      (to.true_positive + to.false_positive);
+                                 (to.true_positive + to.false_positive);
    to.negative_predicive_value = static_cast<double>(to.true_negative) /
-      (to.true_negative + to.false_negative);
+                                 (to.true_negative + to.false_negative);
    to.false_discovery_rate = static_cast<double>(to.false_positive) /
-      (to.false_positive + to.true_positive);
-   to.false_omission_rate  = static_cast<double>(to.false_negative) /
-      (to.false_negative + to.true_negative);
+                             (to.false_positive + to.true_positive);
+   to.false_omission_rate = static_cast<double>(to.false_negative) /
+                            (to.false_negative + to.true_negative);
 
-   to.accuracy = static_cast<double>(to.true_positive + to.true_negative) /
-      to.sample_size;
+   to.accuracy =
+      static_cast<double>(to.true_positive + to.true_negative) / to.sample_size;
    to.f1_score = 2.0 * to.positive_predicive_value * to.true_positive_rate /
-      (to.positive_predicive_value + to.true_positive_rate);
+                 (to.positive_predicive_value + to.true_positive_rate);
    to.matthews_correlation_coefficient =
       (to.true_positive * to.true_negative -
        to.false_positive * to.false_negative) /
-      std::sqrt(
-         (to.true_positive + to.false_positive) *
-         (to.true_positive + to.false_negative) *
-         (to.true_negative + to.false_positive) *
-         (to.true_negative + to.false_negative)
-         );
-   to.bookmaker_informednes = to.true_positive_rate + to.true_negative_rate - 1.0;
-   to.markednes = to.positive_predicive_value + to.negative_predicive_value - 1.0;
+      std::sqrt((to.true_positive + to.false_positive) *
+                (to.true_positive + to.false_negative) *
+                (to.true_negative + to.false_positive) *
+                (to.true_negative + to.false_negative));
+   to.bookmaker_informednes =
+      to.true_positive_rate + to.true_negative_rate - 1.0;
+   to.markednes =
+      to.positive_predicive_value + to.negative_predicive_value - 1.0;
 
    to.mean_diff /= to.sample_size;
 

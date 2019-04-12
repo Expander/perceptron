@@ -9,13 +9,16 @@
 namespace perceptron {
 
 template <int N>
-class Perceptron {
+class Perceptron
+{
 public:
    const Point<N>& get_weights() const { return weights; }
    double get_bias_weight() const { return w0; }
 
-   int run(const Point<N>& x) const {
-      return step(w0 + std::inner_product(x.cbegin(), x.cend(), weights.cbegin(), 0.0));
+   int run(const Point<N>& x) const
+   {
+      return step(
+         w0 + std::inner_product(x.cbegin(), x.cend(), weights.cbegin(), 0.0));
    }
 
    void train(const Dataset<N>& point)
@@ -25,16 +28,14 @@ public:
       w0 += sgn;
 
       for (std::size_t i = 0; i < weights.size(); i++)
-         weights[i] += sgn*point.x[i];
+         weights[i] += sgn * point.x[i];
    }
 
 private:
    Point<N> weights{};
    double w0{0.0};
 
-   int step(double x) const {
-      return x < 0 ? 0 : 1;
-   }
+   int step(double x) const { return x < 0 ? 0 : 1; }
 };
 
 template <int N>
@@ -53,10 +54,10 @@ void print_gnuplot_function(const Perceptron<N>& p, std::ostream& ostr)
          ostr << ',';
    }
 
-   ostr << ") = " << -w0/wmax;
+   ostr << ") = " << -w0 / wmax;
 
    for (int i = 0; i < nx; i++) {
-      ostr << " + " << -weights[i]/wmax << "*x" << i;
+      ostr << " + " << -weights[i] / wmax << "*x" << i;
    }
 
    ostr << '\n';
@@ -69,7 +70,7 @@ std::ostream& operator<<(std::ostream& ostr, const Perceptron<N>& p)
    const auto& weights = p.get_weights();
 
    ostr << '{' << w0;
-   for (const auto& w: weights)
+   for (const auto& w : weights)
       ostr << ", " << w;
    ostr << '}';
 

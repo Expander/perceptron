@@ -22,7 +22,7 @@ inline double make_random(double min_, double max_)
 } // namespace detail
 
 template <int N>
-using Point = std::array<double,N>;
+using Point = std::array<double, N>;
 
 template <int N>
 struct Dataset {
@@ -45,13 +45,14 @@ auto make_dataset(Func f, long npoints) -> std::vector<Dataset<N>>
 }
 
 template <int N>
-void write_to_file(const std::string& filename, const std::vector<Dataset<N>>& dataset)
+void write_to_file(const std::string& filename,
+                   const std::vector<Dataset<N>>& dataset)
 {
    std::ofstream fst(filename);
 
-   for (const auto& d: dataset) {
+   for (const auto& d : dataset) {
       fst << d.y;
-      for (const auto& x: d.x)
+      for (const auto& x : d.x)
          fst << "\t" << x;
       fst << '\n';
    }

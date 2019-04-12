@@ -2,6 +2,7 @@
 
 #include <array>
 #include <iostream>
+#include <numeric>
 
 #include "dataset.hpp"
 

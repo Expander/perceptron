@@ -26,8 +26,8 @@ using Point = std::array<double,N>;
 
 template <int N>
 struct Dataset {
-   Point<N> x; // input vector
-   double y; // output
+   Point<N> x; ///< N-dimensional data vector
+   int y;      ///< class (0 = H0, 1 = H1)
 };
 
 template <int N, class Func>

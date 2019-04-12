@@ -1,5 +1,6 @@
 #include "dataset.hpp"
 #include "perceptron.hpp"
+#include "mlp.hpp"
 #include "test.hpp"
 
 int main(int argc, char* argv[])
@@ -28,20 +29,30 @@ int main(int argc, char* argv[])
 
    std::cout << "training ..." << std::endl;
 
-   Perceptron<N> perceptron;
+   Perceptron<N> slp;
+   MLP<N> mlp;
 
    for (const auto& d : training_sample)
-      perceptron.train(d);
+      slp.train(d);
 
-   std::cout << "testing ...\n\n";
-   const auto test_output = test(perceptron, testing_sample);
-   std::cout << test_output;
+   for (const auto& d : training_sample)
+      mlp.train(d);
 
-   std::cout << "\nPerceptron layout: " << perceptron << std::endl;
+   std::cout << "\ntesting SLP ...\n\n";
+   const auto to_slp = test(slp, testing_sample);
+   std::cout << to_slp;
+
+   std::cout << "\ntesting MLP ...\n\n";
+   const auto to_mlp = test(mlp, testing_sample);
+   std::cout << to_mlp;
+
+   std::cout << "\nPerceptron layout: " << slp << std::endl;
+
+   std::cout << "\nMLP layout: " << mlp << std::endl;
 
    std::cout << '\n';
    std::cout << "Gnuplot script:\n";
-   print_gnuplot_function(perceptron, std::cout);
+   print_gnuplot_function(slp, std::cout);
    std::cout << "plot 'training_sample.txt' u 2:3:1 w points palette, f(x)"
              << std::endl;
 

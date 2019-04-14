@@ -49,7 +49,7 @@ void print_gnuplot_function(const Perceptron<N>& p, std::ostream& ostr)
    ostr << "f(";
 
    for (int i = 0; i < nx; i++) {
-      ostr << "x" << i;
+      ostr << 'x' << i;
       if (i < nx - 1)
          ostr << ',';
    }

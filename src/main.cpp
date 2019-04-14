@@ -53,7 +53,7 @@ int main(int argc, char* argv[])
    std::cout << '\n';
    std::cout << "Gnuplot script:\n";
    print_gnuplot_function(slp, std::cout);
-   std::cout << "plot 'training_sample.txt' u 2:3:1 w points palette, f(x)"
+   std::cout << "plot 'training_sample.txt' u 1:2:3 w points palette, f(x)"
              << std::endl;
 
    return 0;

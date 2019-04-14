@@ -51,10 +51,9 @@ void write_to_file(const std::string& filename,
    std::ofstream fst(filename);
 
    for (const auto& d : dataset) {
-      fst << d.y;
       for (const auto& x : d.x)
-         fst << "\t" << x;
-      fst << '\n';
+         fst << x << '\t';
+      fst << d.y << '\n';
    }
 }
 

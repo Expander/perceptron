@@ -3,6 +3,8 @@
 #include "mlp.hpp"
 #include "test.hpp"
 
+#include <fstream>
+
 int main(int argc, char* argv[])
 {
    using namespace perceptron;
@@ -47,11 +49,10 @@ int main(int argc, char* argv[])
 
    std::cout << "\nMLP layout: " << mlp << std::endl;
 
-   std::cout << '\n';
-   std::cout << "Gnuplot script:\n";
-   print_gnuplot_function(slp, std::cout);
-   std::cout << "plot 'training_sample.txt' u 1:2:3 w points palette, f(x)"
-             << std::endl;
+   std::ofstream slp_script("perceptron.gnuplot");
+   print_gnuplot_function(slp, slp_script);
+   slp_script << "plot 'training_sample.txt' u 1:2:3 w points palette, f(x)"
+              << std::endl;
 
    return 0;
 }

@@ -38,7 +38,7 @@ public:
       return combine(a, output_layer);
    }
 
-   void train(const Dataset<N>& point)
+   void train(const std::vector<Dataset<N>>& dataset)
    {
    }
 

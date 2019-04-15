@@ -21,6 +21,18 @@ public:
          w0 + std::inner_product(x.cbegin(), x.cend(), weights.cbegin(), 0.0));
    }
 
+   void train(const std::vector<Dataset<N>>& dataset)
+   {
+      for (const auto& d : dataset)
+         train(d);
+   }
+
+private:
+   Point<N> weights{};
+   double w0{0.0};
+
+   int step(double x) const { return x < 0 ? 0 : 1; }
+
    void train(const Dataset<N>& point)
    {
       const auto sgn = point.y - run(point.x);
@@ -30,12 +42,6 @@ public:
       for (std::size_t i = 0; i < weights.size(); i++)
          weights[i] += sgn * point.x[i];
    }
-
-private:
-   Point<N> weights{};
-   double w0{0.0};
-
-   int step(double x) const { return x < 0 ? 0 : 1; }
 };
 
 template <int N>

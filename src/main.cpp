@@ -32,11 +32,8 @@ int main(int argc, char* argv[])
    Perceptron<N> slp;
    MLP<N,N> mlp;
 
-   for (const auto& d : training_sample)
-      slp.train(d);
-
-   for (const auto& d : training_sample)
-      mlp.train(d);
+   slp.train(training_sample);
+   mlp.train(training_sample);
 
    std::cout << "\ntesting SLP ...\n\n";
    const auto to_slp = test(slp, testing_sample);

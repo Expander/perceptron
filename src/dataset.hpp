@@ -3,6 +3,7 @@
 #include <array>
 #include <fstream>
 #include <random>
+#include <sstream>
 #include <string>
 #include <vector>
 
@@ -18,6 +19,34 @@ inline double make_random(double min_, double max_)
 
    return uni(rng);
 }
+
+template <int N>
+struct Reader {
+   template <typename Iterator>
+   static void read_from(std::istream& istr, Iterator it)
+   {
+      istr >> *it;
+      Reader<N-1>::read_from(istr, ++it);
+   }
+};
+
+template <>
+struct Reader<1> {
+   template <typename Iterator>
+   static void read_from(std::istream& istr, Iterator it)
+   {
+      istr >> *it;
+      ++it;
+   }
+};
+
+template <>
+struct Reader<0> {
+   template <typename Iterator>
+   static void read_from(std::istream& istr, Iterator it)
+   {
+   }
+};
 
 } // namespace detail
 
@@ -42,6 +71,26 @@ auto make_dataset(Func f, long npoints) -> std::vector<Dataset<N>>
    }
 
    return dataset;
+}
+
+template <int N>
+std::vector<Dataset<N>> read_from_file(const std::string& filename)
+{
+   std::ifstream fst(filename);
+   std::vector<Dataset<N>> vec;
+
+   std::string line;
+   while (std::getline(fst, line)) {
+      std::istringstream iss(line);
+      Dataset<N> dataset;
+
+      detail::Reader<N>::read_from(iss, dataset.x.begin());
+      iss >> dataset.y;
+
+      vec.push_back(std::move(dataset));
+   }
+
+   return vec;
 }
 
 template <int N>

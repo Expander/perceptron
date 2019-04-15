@@ -5,29 +5,46 @@
 
 #include <fstream>
 
+#include <boost/program_options.hpp>
+
+namespace po = boost::program_options;
+
 int main(int argc, char* argv[])
 {
    using namespace perceptron;
 
-   long npoints = 10000;
+   std::string training_sample_file;
+   std::string testing_sample_file;
 
-   if (argc > 1)
-      npoints = atol(argv[1]);
+   try {
+      po::options_description desc{"Options"};
+      desc.add_options()
+         ("help,h", "This help message.")
+         ("training-sample,t", po::value<std::string>(&training_sample_file)
+          ->default_value("training_sample.txt"), "Training sample file.")
+         ("testing-sample,e", po::value<std::string>(&testing_sample_file)
+          ->default_value("testing_sample.txt"), "Testing sample file.");
+
+      po::variables_map vm;
+      po::store(po::parse_command_line(argc, argv, desc),vm);
+
+      if (vm.count("help")) {
+         std::cout << desc << std::endl;
+         return EXIT_SUCCESS;
+      }
+
+      po::notify(vm);
+   } catch (const po::error &ex) {
+      std::cerr << ex.what() << '\n';
+   }
 
    constexpr int N = 2;
 
-   // and
-   auto f = [](const Point<N>& x) -> int {
-      return x[0] > 0.5 && x[1] > 0.5 ? 1 : 0;
-   };
+   std::cout << "Reading training sample from \"" << training_sample_file << "\"\n";
+   const auto training_sample = read_from_file<N>(training_sample_file);
 
-   std::cout << "generating data (" << npoints << " points) ..." << std::endl;
-
-   const auto training_sample = make_dataset<N>(f, npoints);
-   write_to_file("training_sample.txt", training_sample);
-
-   const auto testing_sample = make_dataset<N>(f, npoints);
-   write_to_file("testing_sample.txt", testing_sample);
+   std::cout << "Reading testing sample from \"" << testing_sample_file << "\"\n";
+   const auto testing_sample = read_from_file<N>(testing_sample_file);
 
    std::cout << "training ..." << std::endl;
 

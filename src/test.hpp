@@ -66,6 +66,7 @@ std::ostream& operator<<(std::ostream& ostr, const Test_output& t)
         << t.matthews_correlation_coefficient << '\n'
         << "bookmaker informednes (BM) = " << t.bookmaker_informednes << '\n'
         << "markednes (MK) = " << t.markednes << '\n'
+        << "Point in ROC space: (" << t.false_positive_rate << ", " << t.true_positive_rate << ")\n"
         << "mean abs diff = " << t.mean_diff << " (should be < 0.5)" << '\n';
    return ostr;
 }

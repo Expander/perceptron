@@ -35,7 +35,8 @@ int main(int argc, char* argv[])
 
       po::notify(vm);
    } catch (const po::error &ex) {
-      std::cerr << ex.what() << '\n';
+      std::cerr << "Error: " << ex.what() << '\n';
+      return EXIT_FAILURE;
    }
 
    constexpr int N = 2;

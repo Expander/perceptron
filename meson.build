@@ -10,3 +10,9 @@ main_src = ['src/main.cpp']
 executable('run.x', main_src,
            include_directories : conf_inc,
            dependencies: boost_dep)
+
+make_sample_src = ['src/make_sample.cpp']
+
+executable('make_sample.x', make_sample_src,
+           include_directories : conf_inc,
+           dependencies: boost_dep)

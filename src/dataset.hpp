@@ -94,16 +94,22 @@ std::vector<Dataset<N>> read_from_file(const std::string& filename)
 }
 
 template <int N>
+void write_to_stream(std::ostream& ostr,
+                     const std::vector<Dataset<N>>& dataset)
+{
+   for (const auto& d : dataset) {
+      for (const auto& x : d.x)
+         ostr << x << '\t';
+      ostr << d.y << '\n';
+   }
+}
+
+template <int N>
 void write_to_file(const std::string& filename,
                    const std::vector<Dataset<N>>& dataset)
 {
    std::ofstream fst(filename);
-
-   for (const auto& d : dataset) {
-      for (const auto& x : d.x)
-         fst << x << '\t';
-      fst << d.y << '\n';
-   }
+   write_to_stream(fst, dataset);
 }
 
 } // namespace perceptron

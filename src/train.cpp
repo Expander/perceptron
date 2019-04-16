@@ -41,11 +41,13 @@ int main(int argc, char* argv[])
 
    constexpr int N = 2;
 
-   std::cout << "Reading training sample from \"" << training_sample_file << "\"\n";
+   std::cout << "Reading training sample from \"" << training_sample_file << "\"";
    const auto training_sample = read_from_file<N>(training_sample_file);
+   std::cout << " (" << training_sample.size() << " data points)\n";
 
-   std::cout << "Reading testing sample from \"" << testing_sample_file << "\"\n";
+   std::cout << "Reading testing sample from \"" << testing_sample_file << "\"";
    const auto testing_sample = read_from_file<N>(testing_sample_file);
+   std::cout << " (" << testing_sample.size() << " data points)\n";
 
    std::cout << "training ..." << std::endl;
 

@@ -72,13 +72,14 @@ std::ostream& operator<<(std::ostream& ostr, const Test_output& t)
 }
 
 template <class Classifier, int N>
-Test_output test(Classifier f, const std::vector<Dataset<N>>& dataset)
+Test_output test(Classifier f, const std::vector<Dataset<N>>& dataset,
+                 double threshold = 0.5)
 {
    Test_output to;
    to.sample_size = dataset.size();
 
    for (const auto& d : dataset) {
-      const auto y = f.run(d.x);
+      const auto y = f.run(d.x) < threshold ? 0 : 1;
 
       if (d.y && y)
          to.true_positive++;

@@ -112,4 +112,18 @@ void write_to_file(const std::string& filename,
    write_to_stream(fst, dataset);
 }
 
+template <std::size_t N>
+std::ostream& operator<<(std::ostream& ostr, const Point<N>& p)
+{
+   ostr << '[';
+   for (std::size_t i = 0; i < p.size(); i++) {
+      ostr << p[i];
+      if (i + 1 < p.size())
+         ostr << ", ";
+   }
+   ostr << ']';
+
+   return ostr;
+}
+
 } // namespace perceptron

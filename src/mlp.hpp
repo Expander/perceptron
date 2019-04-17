@@ -41,7 +41,7 @@ public:
          run_hidden_layer(a, l);
       }
 
-      return run_output_layer(a, output_layer);
+      return run_output_layer(a);
    }
 
    void train(const std::vector<Dataset<N>>& dataset, std::size_t epochs = 100)
@@ -87,12 +87,12 @@ private:
       }
    }
 
-   static double run_output_layer(Point<N>& a, const detail::Output_layer<N>& l)
+   double run_output_layer(Point<N>& a) const
    {
-      const auto mp =
-         std::inner_product(l.w.cbegin(), l.w.cend(), a.cbegin(), 0.0);
+      const auto mp = std::inner_product(
+         output_layer.w.cbegin(), output_layer.w.cend(), a.cbegin(), 0.0);
 
-      const auto net = l.w0 + mp;
+      const auto net = output_layer.w0 + mp;
 
       return activation(net);
    }

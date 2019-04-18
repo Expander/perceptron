@@ -52,7 +52,7 @@ int main(int argc, char* argv[])
    std::cout << "training ..." << std::endl;
 
    Perceptron<N> slp;
-   MLP<N,N> mlp;
+   MLP<N,1> mlp;
 
    slp.train(training_sample);
    mlp.train(training_sample);

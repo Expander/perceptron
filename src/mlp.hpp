@@ -44,16 +44,16 @@ public:
       return run_output_layer(a);
    }
 
-   void train(const std::vector<Dataset<N>>& dataset, std::size_t epochs = 100)
+   void train(const std::vector<Dataset<N>>& dataset, std::size_t epochs = 100, double learning_rate = 1.0)
    {
-      const double eps = 1e-3;
+      const double max_grad = 1e-10;
       std::size_t epoch = 0;
       auto weights = get_weights();
       auto gr = grad(weights, dataset);
 
-      while (norm(gr) > eps && epoch++ < epochs) {
+      while (norm(gr) > max_grad && epoch++ < epochs) {
          for (std::size_t i = 0; i < weights.size(); i++) {
-            weights[i] -= eps*gr[i];
+            weights[i] -= learning_rate*gr[i];
          }
 
          gr = grad(weights, dataset);

@@ -13,7 +13,7 @@ namespace detail {
 template <int N>
 struct Hidden_layer
 {
-   std::array<Point<N>,N> w;
+   std::array<Point<N>,N> w; ///< w[j][i] = weight for input neuron i and output j
    Point<N> w0;
 };
 

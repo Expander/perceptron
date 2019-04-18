@@ -79,7 +79,7 @@ private:
          net[i] = l.w0[i] + scp(l.w[i], a);
       }
 
-      for (std::size_t i = 0; i < a.size(); i++) {
+      for (std::size_t i = 0; i < N; i++) {
          a[i] = activation(net[i]);
       }
    }

@@ -188,8 +188,8 @@ private:
    {
       double n = 0.;
       for (const auto v : vec)
-         n += std::abs(v);
-      return n;
+         n += detail::sqr(v);
+      return std::sqrt(n);
    }
 
    /// appends array to vector

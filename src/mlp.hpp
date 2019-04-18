@@ -24,6 +24,45 @@ struct Output_layer
    double w0;
 };
 
+double activation(double z) { return 1. / (1. + std::exp(-z)); }
+
+/// appends array to vector
+template <std::size_t N>
+void append(std::vector<double>& vec, const std::array<double, N>& a)
+{
+   vec.insert(vec.end(), a.cbegin(), a.cend());
+}
+
+/// appends array to vector
+void append(std::vector<double>& vec, double a) { vec.push_back(a); }
+
+/// exctracts array from vector
+template <std::size_t N>
+void extract(const std::vector<double>& vec, std::array<double, N>& a,
+             std::size_t start)
+{
+   if (start + N - 1 > vec.size())
+      throw std::runtime_error("Index out of bounds!");
+
+   std::copy_n(vec.cbegin() + start, N, a.begin());
+}
+
+/// exctracts array from vector
+void extract(const std::vector<double>& vec, double& a,
+             std::size_t start)
+{
+   if (start > vec.size())
+      throw std::runtime_error("Index out of bounds!");
+
+   a = *(vec.cbegin() + start);
+}
+
+template <std::size_t N>
+double scp(const Point<N>& a, const Point<N>& b)
+{
+   return std::inner_product(a.cbegin(), a.cend(), b.cbegin(), 0.0);
+}
+
 template <typename T>
 T sqr (T x) { return x*x; }
 
@@ -69,32 +108,25 @@ private:
    std::array<detail::Hidden_layer<N>,L> hidden_layers;
    detail::Output_layer<N> output_layer;
 
-   static double activation(double z) { return 1. / (1. + std::exp(-z)); }
-
    static void run_hidden_layer(Point<N>& a, const detail::Hidden_layer<N>& l)
    {
       Point<N> net{};
 
       for (std::size_t i = 0; i < N; i++) {
-         net[i] = l.w0[i] + scp(l.w[i], a);
+         net[i] = l.w0[i] + detail::scp(l.w[i], a);
       }
 
       for (std::size_t i = 0; i < N; i++) {
-         a[i] = activation(net[i]);
+         a[i] = detail::activation(net[i]);
       }
    }
 
    double run_output_layer(Point<N>& a) const
    {
-      const auto mp = scp(output_layer.w, a);
+      const auto mp = detail::scp(output_layer.w, a);
       const auto net = output_layer.w0 + mp;
 
-      return activation(net);
-   }
-
-   static double scp(const Point<N>& a, const Point<N>& b)
-   {
-      return std::inner_product(a.cbegin(), a.cend(), b.cbegin(), 0.0);
+      return detail::activation(net);
    }
 
    /// calculate gradient of err(w,D)
@@ -153,14 +185,14 @@ private:
       std::vector<double> vec;
 
       for (const auto& l : hidden_layers) {
-         append(vec, l.w0);
+         detail::append(vec, l.w0);
          for (const auto& wa : l.w) {
-            append(vec, wa);
+            detail::append(vec, wa);
          }
       }
 
-      append(vec, output_layer.w0);
-      append(vec, output_layer.w);
+      detail::append(vec, output_layer.w0);
+      detail::append(vec, output_layer.w);
 
       return vec;
    }
@@ -170,16 +202,16 @@ private:
       std::size_t offset = 0;
 
       for (auto& l : hidden_layers) {
-         extract(vec, l.w0, offset);
+         detail::extract(vec, l.w0, offset);
          offset += N;
          for (auto& wa : l.w) {
-            extract(vec, wa, offset);
+            detail::extract(vec, wa, offset);
             offset += N;
          }
       }
 
-      extract(vec, output_layer.w0, offset++);
-      extract(vec, output_layer.w, offset);
+      detail::extract(vec, output_layer.w0, offset++);
+      detail::extract(vec, output_layer.w, offset);
       offset += N;
    }
 
@@ -190,40 +222,6 @@ private:
       for (const auto v : vec)
          n += detail::sqr(v);
       return std::sqrt(n);
-   }
-
-   /// appends array to vector
-   template <std::size_t NA>
-   static void append(std::vector<double>& vec, const std::array<double, NA>& a)
-   {
-      vec.insert(vec.end(), a.cbegin(), a.cend());
-   }
-
-   /// appends array to vector
-   static void append(std::vector<double>& vec, double a)
-   {
-      vec.push_back(a);
-   }
-
-   /// exctracts array from vector
-   template <std::size_t NA>
-   static void extract(const std::vector<double>& vec, std::array<double, NA>& a,
-                       std::size_t start)
-   {
-      if (start + NA - 1 > vec.size())
-         throw std::runtime_error("Index out of bounds!");
-
-      std::copy_n(vec.cbegin() + start, NA, a.begin());
-   }
-
-   /// exctracts array from vector
-   static void extract(const std::vector<double>& vec, double& a,
-                       std::size_t start)
-   {
-      if (start > vec.size())
-         throw std::runtime_error("Index out of bounds!");
-
-      a = *(vec.cbegin() + start);
    }
 };
 

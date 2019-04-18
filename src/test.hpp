@@ -81,6 +81,8 @@ Test_output test(Classifier f, const std::vector<Dataset<N>>& dataset,
    for (const auto& d : dataset) {
       const auto y = f.run(d.x) < threshold ? 0 : 1;
 
+      std::cout << ">>> actual y = " << d.y << ", got y = " << f.run(d.x) << '\n';
+
       if (d.y && y)
          to.true_positive++;
       if (!d.y && !y)

@@ -76,10 +76,7 @@ private:
       Point<N> net{};
 
       for (std::size_t i = 0; i < N; i++) {
-         const auto mp =
-            std::inner_product(l.w[i].cbegin(), l.w[i].cend(), a.cbegin(), 0.0);
-
-         net[i] = l.w0[i] + mp;
+         net[i] = l.w0[i] + scp(l.w[i], a);
       }
 
       for (std::size_t i = 0; i < a.size(); i++) {
@@ -89,12 +86,15 @@ private:
 
    double run_output_layer(Point<N>& a) const
    {
-      const auto mp = std::inner_product(
-         output_layer.w.cbegin(), output_layer.w.cend(), a.cbegin(), 0.0);
-
+      const auto mp = scp(output_layer.w, a);
       const auto net = output_layer.w0 + mp;
 
       return activation(net);
+   }
+
+   static double scp(const Point<N>& a, const Point<N>& b)
+   {
+      return std::inner_product(a.cbegin(), a.cend(), b.cbegin(), 0.0);
    }
 
    /// calculate gradient of err(w,D)

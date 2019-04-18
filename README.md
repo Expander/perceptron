@@ -21,3 +21,7 @@ Generating training and testing samples:
 Training the classifier(s):
 
     ./train.x -t training_sample.txt -e testing_sample.txt
+
+The results can be plotted like this:
+
+    gnuplot -p perceptron.gnuplot

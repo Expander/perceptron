@@ -121,9 +121,15 @@ private:
       double e = 0.;
 
       for (const auto& d : dataset)
-         e += detail::sqr(mlp.run(d.x) - d.y);
+         e += loss(mlp, d);
 
-      return 0.5*e;
+      return e/dataset.size();
+   }
+
+   /// loss for a single point
+   static double loss(const MLP<N, L>& mlp, const Dataset<N>& d)
+   {
+      return 0.5 * detail::sqr(mlp.run(d.x) - d.y);
    }
 
    /// calculate error
